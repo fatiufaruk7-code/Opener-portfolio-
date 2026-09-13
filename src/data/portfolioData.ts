@@ -1,78 +1,80 @@
 import { AboutCard, ProcessStep, ProjectItem, SkillItem, ServiceItem, PricingPackage } from '../types.ts';
 
 export const personalInfo = {
-  name: "Champz Digital",
-  preferredName: "Champz",
-  brandName: "Champz Digital",
-  logoTag: "CD",
-  supportingTitle: "Web Development • Digital Solutions",
-  headline: "Modern Websites. Digital Solutions.",
-  tagline: "Modern Websites. Digital Solutions.",
-  role: "Web Development • Digital Solutions",
-  status: "Available for projects",
-  bioHeadline: "Modern Websites. Digital Solutions.",
-  shortDescription: "We build fast, responsive and professional websites for businesses, organizations and individuals.",
+  name: "Clarity Creative",
+  preferredName: "Clarity",
+  brandName: "Clarity Creative",
+  logoTag: "C²",
+  supportingTitle: "Web Developer • Digital Creative",
+  headline: "Building Modern Digital Experiences.",
+  tagline: "Modern Websites. Clear Solutions.",
+  role: "Computer Science Student & Aspiring Web Developer",
+  status: "Available for new projects",
+  bioHeadline: "Modern Websites. Clear Solutions.",
+  shortDescription: "I build fast, responsive and user-friendly websites that help businesses, organizations and individuals establish a strong online presence.",
   email: "fatiufaruk7@gmail.com",
   location: "Available Worldwide / Remote",
-  experience: "Professional Web Development & Digital Solutions",
+  experience: "Computer Science & Modern Web Development",
   socials: {
+    github: "https://github.com",
     twitter: "https://x.com/Toriblackm8j9",
     whatsapp: "https://wa.me/2348137941486",
     whatsappNumber: "08137941486",
   }
 };
 
-export const codeSnippetString = `const brand = {
-    name: "Champz Digital",
-    focus: "Web Development",
-    mission: "Modern Websites. Digital Solutions.",
-    status: "Available for projects"
+export const codeSnippetString = `const developer = {
+  brand: "Clarity Creative",
+  role: "Web Developer & CS Student",
+  tagline: "Modern Websites. Clear Solutions.",
+  stack: ["HTML5", "CSS3", "JavaScript", "React", "Git", "GitHub"],
+  status: "Available for projects"
 };
 
-function buildWebsite(client) {
-    return {
-        speed: "Blazing Fast",
-        design: "Clean & Responsive",
-        solution: "Tailored to Your Goals"
-    };
+function craftDigitalExperience(project) {
+  return {
+    speed: "Blazing Fast & Optimized",
+    design: "Clean, Responsive & Intuitive",
+    solution: "Clear Solutions for Real Growth"
+  };
 };`;
 
 export const servicesData: ServiceItem[] = [
   {
+    id: "web-development",
+    title: "Web Development",
+    description: "Build modern, responsive websites using clean, maintainable and performant code.",
+    iconName: "Code"
+  },
+  {
+    id: "responsive-web-design",
+    title: "Responsive Web Design",
+    description: "Create websites that look and work properly on phones, tablets, laptops and desktops.",
+    iconName: "Smartphone"
+  },
+  {
     id: "business-websites",
     title: "Business Websites",
-    description: "Professional responsive websites that give your business a strong online presence.",
+    description: "Professional websites designed for businesses and organizations to build credibility and trust.",
     iconName: "Briefcase"
   },
   {
     id: "landing-pages",
     title: "Landing Pages",
-    description: "High-converting landing pages designed to present your product, service or campaign clearly.",
+    description: "High-converting modern landing pages designed to present your product, service or campaign clearly.",
     iconName: "Target"
   },
   {
-    id: "ecommerce-websites",
-    title: "E-commerce Websites",
-    description: "Modern online stores that make it easier for customers to discover and purchase your products.",
-    iconName: "ShoppingBag"
+    id: "website-deployment",
+    title: "Website Deployment",
+    description: "Deploy websites and make them accessible, fast and reliable online using Vercel, Firebase & modern hosts.",
+    iconName: "Rocket"
   },
   {
-    id: "school-portals",
-    title: "School Portals",
-    description: "Functional websites and portals designed for schools, students, staff and administrators.",
-    iconName: "GraduationCap"
-  },
-  {
-    id: "web-applications",
-    title: "Web Applications",
-    description: "Interactive web applications built around your specific business or organizational needs.",
+    id: "digital-solutions",
+    title: "Digital Solutions",
+    description: "Build practical, tailored digital experiences and workflows based on your unique goals.",
     iconName: "Layers"
-  },
-  {
-    id: "progressive-web-apps",
-    title: "Progressive Web Apps",
-    description: "Fast, installable web experiences that work across phones, tablets and desktop devices.",
-    iconName: "Smartphone"
   }
 ];
 
@@ -81,54 +83,52 @@ export const pricingPackagesData: PricingPackage[] = [
     id: "starter",
     name: "Starter",
     price: "From ₦30,000",
-    bestFor: "Personal websites and simple landing pages.",
+    bestFor: "For simple personal or small business websites.",
     features: [
-      "Responsive design",
-      "Up to 3 sections/pages",
-      "Mobile optimization",
-      "Contact integration",
-      "Basic SEO",
-      "Deployment"
+      "Responsive mobile-first design",
+      "Up to 3–5 clean pages/sections",
+      "Contact section & inquiry forms",
+      "Basic SEO & meta configuration",
+      "Fast deployment & launch setup",
+      "Cross-browser compatibility"
     ],
-    ctaText: "Get Started",
+    ctaText: "Choose Starter",
     budgetRange: "₦30k – ₦50k"
   },
   {
-    id: "business",
-    name: "Business",
+    id: "professional",
+    name: "Professional",
     price: "From ₦50,000",
-    badge: "Most Popular",
+    badge: "Recommended",
     popular: true,
-    bestFor: "Businesses that need a professional online presence.",
+    bestFor: "For businesses that need a stronger online presence.",
     features: [
-      "Professional responsive design",
-      "Up to 6 pages",
-      "Contact / WhatsApp integration",
-      "Basic SEO",
-      "Social media integration",
-      "Deployment",
-      "PWA option"
+      "Custom responsive design & modern UI",
+      "Multiple pages with tailored content",
+      "Contact form & WhatsApp integration",
+      "Basic SEO & social share cards",
+      "Performance optimization & fast load",
+      "Website deployment on custom domain",
+      "PWA installable app support"
     ],
-    ctaText: "Start a Project",
+    ctaText: "Start Professional",
     budgetRange: "₦50k – ₦80k"
   },
   {
-    id: "premium",
-    name: "Premium",
+    id: "custom",
+    name: "Custom",
     price: "From ₦80,000",
-    bestFor: "Organizations and businesses needing advanced functionality.",
+    bestFor: "For larger or specialized digital projects.",
     features: [
-      "Custom UI/UX",
-      "Multiple pages",
-      "Advanced functionality",
-      "Database/API integration where required",
-      "SEO optimization",
-      "Analytics",
-      "PWA support",
-      "Deployment",
-      "Post-launch support"
+      "Fully customized UI/UX design",
+      "Advanced interactive functionality",
+      "Database / backend integration where required",
+      "Custom forms, portals or product flows",
+      "Advanced SEO & analytics setup",
+      "Deployment & continuous integration",
+      "Priority post-launch support"
     ],
-    ctaText: "Request a Quote",
+    ctaText: "Discuss Custom",
     budgetRange: "₦80k – ₦100k"
   }
 ];
@@ -136,35 +136,44 @@ export const pricingPackagesData: PricingPackage[] = [
 export const aboutCards: AboutCard[] = [
   {
     title: "Web Developer",
-    icon: "fa-solid fa-code",
-    description: "Building modern web experiences with clean architecture.",
+    icon: "Code",
+    description: "Building modern responsive websites using clean and semantic architecture.",
   },
   {
-    title: "Student",
-    icon: "fa-solid fa-graduation-cap",
-    description: "Studying Computer Science and cutting-edge software systems.",
+    title: "Computer Science",
+    icon: "GraduationCap",
+    description: "Studying Computer Science with a passion for software design and problem solving.",
   },
   {
-    title: "Creative",
-    icon: "fa-solid fa-lightbulb",
-    description: "Turning ambitious ideas into intuitive digital solutions.",
+    title: "Clean UI Design",
+    icon: "Palette",
+    description: "Focusing on intuitive, accessible interfaces that balance aesthetics with speed.",
   },
   {
-    title: "Problem Solver",
-    icon: "fa-solid fa-cubes",
-    description: "Writing maintainable, scalable, and responsive codebases.",
+    title: "Digital Solutions",
+    icon: "Lightbulb",
+    description: "Turning real client challenges into clear, reliable, high-impact web solutions.",
   }
 ];
 
 export const skillsData: SkillItem[] = [
   {
-    id: "html-css",
-    name: "HTML5 & CSS3",
+    id: "html5",
+    name: "HTML5",
     category: "frontend",
     icon: "fa-brands fa-html5",
     lucideIconName: "Code2",
-    description: "Semantic structures, modern flexbox & grid layouts.",
+    description: "Semantic web architecture, accessible markup, and structured data.",
     level: 95
+  },
+  {
+    id: "css3",
+    name: "CSS3 & Modern Layouts",
+    category: "frontend",
+    icon: "fa-brands fa-css3-alt",
+    lucideIconName: "Palette",
+    description: "Responsive flexbox, CSS grid, custom properties, and fluid typography.",
+    level: 94
   },
   {
     id: "javascript",
@@ -172,136 +181,161 @@ export const skillsData: SkillItem[] = [
     category: "frontend",
     icon: "fa-brands fa-js",
     lucideIconName: "FileCode",
-    description: "Asynchronous programming, DOM manipulation, APIs.",
+    description: "DOM manipulation, modern asynchronous logic, APIs, and modern ES features.",
     level: 92
   },
   {
     id: "react",
-    name: "React & Next.js",
+    name: "React",
     category: "frontend",
     icon: "fa-brands fa-react",
     lucideIconName: "Atom",
-    description: "Custom hooks, component state trees, and fast render cycles.",
+    description: "Component modularity, declarative hooks, state management, and Vite builds.",
     level: 90
   },
   {
-    id: "typescript",
-    name: "TypeScript",
+    id: "responsive",
+    name: "Responsive Web Design",
     category: "frontend",
-    icon: "fa-solid fa-file-shield",
-    lucideIconName: "ShieldCheck",
-    description: "Strict static typing, interfaces, and resilient type safety.",
-    level: 88
+    icon: "fa-solid fa-mobile-screen",
+    lucideIconName: "Smartphone",
+    description: "Mobile-first ergonomic experiences optimized for mobile, tablet and desktop.",
+    level: 96
   },
   {
-    id: "tailwind",
-    name: "Tailwind CSS",
-    category: "frontend",
-    icon: "fa-solid fa-palette",
-    lucideIconName: "Palette",
-    description: "Design systems, utility-first micro-styling, dark themes.",
-    level: 94
-  },
-  {
-    id: "node",
-    name: "Node.js & Express",
-    category: "backend",
-    icon: "fa-brands fa-node-js",
-    lucideIconName: "Server",
-    description: "REST APIs, secure server endpoints, middleware routing.",
-    level: 84
-  },
-  {
-    id: "git",
+    id: "git-github",
     name: "Git & GitHub",
     category: "tools",
     icon: "fa-brands fa-git-alt",
     lucideIconName: "GitBranch",
-    description: "Version control workflows, branching, PR review pipelines.",
-    level: 89
+    description: "Source code version control, structured commits, branching and repository management.",
+    level: 90
   },
   {
-    id: "responsive",
-    name: "Responsive Design",
+    id: "ui-design",
+    name: "UI Design & Tailwind",
     category: "frontend",
-    icon: "fa-solid fa-mobile-screen",
-    lucideIconName: "Smartphone",
-    description: "Mobile-first layouts adaptable to any device display.",
-    level: 96
+    icon: "fa-solid fa-paintbrush",
+    lucideIconName: "Layers",
+    description: "Glassmorphic interfaces, high-contrast dark modes, and design token consistency.",
+    level: 92
   },
   {
-    id: "perf",
-    name: "Performance & SEO",
+    id: "deployment-vercel",
+    name: "Website Deployment & Vercel",
     category: "tools",
-    icon: "fa-solid fa-bolt",
-    lucideIconName: "Zap",
-    description: "Core Web Vitals optimization, asset compression, semantic meta.",
-    level: 86
+    icon: "fa-solid fa-cloud-arrow-up",
+    lucideIconName: "Rocket",
+    description: "Automated continuous deployments, custom domains, HTTPS, and CDN edge routing.",
+    level: 91
+  },
+  {
+    id: "firebase",
+    name: "Firebase",
+    category: "backend",
+    icon: "fa-solid fa-fire",
+    lucideIconName: "Server",
+    description: "Firestore database schemas, client integration, and hosting workflows.",
+    level: 85
   }
+];
+
+export const marqueeTechList = [
+  { name: "HTML5", symbol: "HTML" },
+  { name: "CSS3", symbol: "CSS" },
+  { name: "JavaScript", symbol: "JS" },
+  { name: "React", symbol: "REACT" },
+  { name: "Git", symbol: "GIT" },
+  { name: "GitHub", symbol: "GITHUB" },
+  { name: "Vercel", symbol: "VERCEL" },
+  { name: "Firebase", symbol: "FIREBASE" },
+  { name: "Tailwind CSS", symbol: "TAILWIND" },
+  { name: "TypeScript", symbol: "TS" }
 ];
 
 export const projectsData: ProjectItem[] = [
   {
-    id: "nexus-analytics",
-    title: "Nexus Analytics Dashboard",
-    category: "Web Application",
-    projectType: "Demo Project",
-    tags: ["React", "TypeScript", "Tailwind CSS", "Data Viz"],
-    description: "A high-performance cloud metrics dashboard displaying real-time telemetry, customizable widgets, and financial analytics.",
-    overview: "Nexus Analytics is an interactive web dashboard designed to explore real-time telemetry metrics, user traffic, and financial data in a responsive, low-light interface.",
-    objective: "To demonstrate complex React state handling, dynamic chart visualizations, responsive data grids, and dark theme UI design.",
-    previewClass: "preview-one",
-    previewGradient: "radial-gradient(circle, #293e8b 0%, #091025 80%)",
-    previewIcon: "fa-solid fa-chart-pie",
-    liveUrl: "#",
-    githubUrl: "https://github.com",
-    featured: true,
-    highlights: [
-      "Interactive data charts with real-time state synchronization",
-      "Dynamic dark mode theme tailored for low-light developer workflows",
-      "Modular dashboard drag-and-drop card grid"
-    ]
-  },
-  {
-    id: "aura-creative",
-    title: "Aura Creative Studio",
-    category: "Agency Portfolio",
-    projectType: "Concept",
-    tags: ["Next.js", "Motion", "UI/UX", "Tailwind"],
-    description: "An immersive digital experience built for design studios, featuring fluid cursor dynamics, smooth scroll physics, and typography showcase.",
-    overview: "Aura Creative Studio is a portfolio showcase concept exploring fluid micro-interactions, responsive typography scaling, and modern editorial aesthetics.",
-    objective: "To design a visually refined web presence highlighting interactive layout animations, fluid typography algorithms, and clean component structures.",
-    previewClass: "preview-two",
-    previewGradient: "radial-gradient(circle, #572c82 0%, #160b23 80%)",
-    previewIcon: "fa-solid fa-wand-magic-sparkles",
-    liveUrl: "#",
-    githubUrl: "https://github.com",
-    featured: true,
-    highlights: [
-      "Hardware-accelerated micro-interactions and transitions",
-      "Dynamic typography scaling using fluid clamp algorithms",
-      "Custom case study modal viewer with high-res asset previews"
-    ]
-  },
-  {
-    id: "devflow-workspace",
-    title: "DevFlow Productivity Suite",
-    category: "Developer Tool",
+    id: "portfolio-website",
+    title: "Personal Portfolio Website",
+    category: "Web Development",
     projectType: "Personal Project",
-    tags: ["TypeScript", "Node.js", "WebSockets", "CSS3"],
-    description: "A minimalist developer workspace combining markdown notes, instant code snippet storage, and distraction-free task management.",
-    overview: "DevFlow is a minimalist productivity workspace for developers combining instant code snippet management, live markdown previewing, and distraction-free task lists.",
-    objective: "To build a fast, zero-latency developer tool with clean client-side caching and responsive, distraction-free typography.",
-    previewClass: "preview-three",
-    previewGradient: "radial-gradient(circle, #19636c 0%, #06191c 80%)",
-    previewIcon: "fa-solid fa-layer-group",
+    tags: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+    description: "A modern responsive developer portfolio designed to showcase skills, projects and services with clean visual motion.",
+    overview: "A custom personal portfolio website designed from the ground up for Clarity Creative. Features a sleek dark glassmorphism interface, interactive project modals, responsive touch controls, and smooth entrance sequences.",
+    objective: "To present web development skills, live client services, and transparent pricing in a polished, highly accessible digital showcase.",
+    previewClass: "preview-one",
+    previewGradient: "radial-gradient(circle, rgba(139, 92, 246, 0.45) 0%, rgba(11, 16, 32, 0.9) 80%)",
+    previewIcon: "Code",
     liveUrl: "#",
     githubUrl: "https://github.com",
     featured: true,
     highlights: [
-      "Instant syntax-highlighted snippet manager with one-click copy",
-      "Markdown editor with live rendered preview and export options",
-      "Offline-first local cache synchronization with zero latency"
+      "High-performance responsive design across desktop, tablet, and mobile",
+      "Interactive case study showcase with full technical specifications",
+      "Preloader experience, dark mode palette, and accessible color contrast"
+    ]
+  },
+  {
+    id: "restaurant-website",
+    title: "Restaurant Website",
+    category: "Business Website",
+    projectType: "Demo Project",
+    tags: ["HTML5", "CSS3", "JavaScript", "Responsive UI"],
+    description: "A modern restaurant website featuring responsive design, appetizing menu presentation, reservation flow and clear calls to action.",
+    overview: "A vibrant dining website crafted to help culinary businesses attract patrons online. Features categorized digital menus, chef specials, mobile booking forms, and clear location/contact integration.",
+    objective: "To demonstrate responsive dining catalog layout, interactive mobile menus, and seamless client conversion journeys.",
+    previewClass: "preview-two",
+    previewGradient: "radial-gradient(circle, rgba(59, 130, 246, 0.45) 0%, rgba(11, 16, 32, 0.9) 80%)",
+    previewIcon: "Utensils",
+    liveUrl: "#",
+    githubUrl: "https://github.com",
+    featured: true,
+    highlights: [
+      "Mobile-optimized visual menu card layout with dietary tags",
+      "Integrated reservation inquiry and direct WhatsApp order button",
+      "Fast image loading and accessible typographic scale"
+    ]
+  },
+  {
+    id: "clarity-sell",
+    title: "Clarity Sell",
+    category: "Digital Commerce",
+    projectType: "Concept Project",
+    tags: ["React", "TypeScript", "Tailwind", "Cart UI"],
+    description: "A digital product and data-selling platform concept designed around a simple, friction-free purchasing and checkout experience.",
+    overview: "Clarity Sell is an innovative concept for digital creators, merchants, and data providers to distribute products online. It features clean product previews, instant checkout calculations, and modern digital asset delivery.",
+    objective: "To explore seamless digital asset distribution, cart state management, and intuitive checkout micro-interactions in modern web apps.",
+    previewClass: "preview-three",
+    previewGradient: "radial-gradient(circle, rgba(236, 72, 153, 0.4) 0%, rgba(11, 16, 32, 0.9) 80%)",
+    previewIcon: "ShoppingBag",
+    liveUrl: "#",
+    githubUrl: "https://github.com",
+    featured: true,
+    highlights: [
+      "Streamlined digital checkout flow with live order summary",
+      "Responsive product grids with instant search and filter controls",
+      "Clean glassmorphism card surfaces with subtle purple glow"
+    ]
+  },
+  {
+    id: "school-portal",
+    title: "School Portal",
+    category: "Educational Web App",
+    projectType: "Concept Project",
+    tags: ["React", "TypeScript", "Dashboard", "Student UI"],
+    description: "A modern university portal concept featuring student-focused academic schedules, course tracking and administrative functionality.",
+    overview: "A student-centered educational portal interface designed for university and college workflows. Includes student result checking, semester course registration, announcement boards, and department resources.",
+    objective: "To build an organized, accessible dashboard interface solving real student navigation challenges with clear visual hierarchy.",
+    previewClass: "preview-four",
+    previewGradient: "radial-gradient(circle, rgba(99, 102, 241, 0.45) 0%, rgba(11, 16, 32, 0.9) 80%)",
+    previewIcon: "GraduationCap",
+    liveUrl: "#",
+    githubUrl: "https://github.com",
+    featured: true,
+    highlights: [
+      "Student result portal and semester grade overview interface",
+      "Course schedule calendar with upcoming lecture time indicators",
+      "Responsive sidebar navigation and accessible data tables"
     ]
   }
 ];
@@ -310,41 +344,42 @@ export const processSteps: ProcessStep[] = [
   {
     number: "01",
     title: "Discovery & Planning",
-    icon: "fa-solid fa-compass",
-    description: "Defining project objectives, user personas, technical requirements, and system scope.",
+    icon: "Compass",
+    description: "Understanding your goals, defining project scope, target audience, and structuring key website requirements.",
     details: [
-      "Requirement specification & architecture mapping",
-      "Technology selection and benchmark assessment"
+      "Project requirements analysis & goal definition",
+      "Information architecture and wireframe planning"
     ]
   },
   {
     number: "02",
     title: "Design & Prototyping",
-    icon: "fa-solid fa-pen-ruler",
-    description: "Crafting wireframes, UI design systems, interactive components, and responsive grids.",
+    icon: "PenTool",
+    description: "Designing modern, responsive layouts with clean typography, clear visual hierarchy, and cohesive branding.",
     details: [
-      "Consistent typographic hierarchy & color contrast",
-      "Mobile and desktop layout ergonomics"
+      "Modern UI/UX design with responsive grids",
+      "High-contrast color styling and intuitive controls"
     ]
   },
   {
     number: "03",
     title: "Clean Development",
-    icon: "fa-solid fa-code",
-    description: "Writing modular, semantic, and performant TypeScript code with robust error boundaries.",
+    icon: "Code",
+    description: "Writing semantic, performant, and well-structured code with modern web standards and responsive behaviors.",
     details: [
-      "Component modularity and reusable utility logic",
-      "Zero-latency reactive state updates"
+      "Component modularity and clean TypeScript/React",
+      "Performance optimization and smooth motion transitions"
     ]
   },
   {
     number: "04",
     title: "Testing & Launch",
-    icon: "fa-solid fa-rocket",
-    description: "Rigorous cross-browser verification, accessibility checks, performance audits, and launch.",
+    icon: "Rocket",
+    description: "Conducting thorough cross-device verification, SEO checks, and deploying the website online for global access.",
     details: [
-      "Lighthouse performance & accessibility audits",
-      "Continuous deployment setup & monitoring"
+      "Cross-device responsiveness and accessibility audit",
+      "Fast deployment on Vercel or cloud hosts with custom domain"
     ]
   }
 ];
+

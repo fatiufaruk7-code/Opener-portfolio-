@@ -1,4 +1,4 @@
-# robots.txt for Champz Digital
+# robots.txt for Clarity Creative
 # Website: https://darex-portfolio.vercel.app/
 
 User-agent: *

@@ -12,7 +12,7 @@ export interface ProjectItem {
   id: string;
   title: string;
   category: string;
-  projectType?: 'Concept' | 'Personal Project' | 'Demo Project';
+  projectType?: string;
   tags: string[];
   description: string;
   overview?: string;

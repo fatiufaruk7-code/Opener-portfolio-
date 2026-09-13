@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, MessageSquare } from 'lucide-react';
-import { personalInfo } from '../data/portfolioData.ts';
+import { Menu, X, ArrowRight, MessageCircle } from 'lucide-react';
 import { PWAInstallButton } from './PWAInstallButton.tsx';
-import { scrollToSection } from '../utils/navigation.ts';
 
 interface NavbarProps {
   activeSection: string;
@@ -14,163 +12,128 @@ export const Navbar: React.FC<NavbarProps> = ({ activeSection }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 30);
+      setIsScrolled(window.scrollY > 20);
     };
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent background scrolling when mobile menu is open
-  useEffect(() => {
-    if (mobileMenuOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileMenuOpen]);
-
-  // Handle initial URL hash scroll on mount
-  useEffect(() => {
-    if (window.location.hash) {
-      const hashId = window.location.hash.replace('#', '');
-      const timer = setTimeout(() => {
-        scrollToSection(hashId, false);
-      }, 250);
-      return () => clearTimeout(timer);
-    }
-  }, []);
-
-  // Handle browser Back / Forward navigation
-  useEffect(() => {
-    const handlePopState = () => {
-      const hashId = window.location.hash ? window.location.hash.replace('#', '') : 'home';
-      scrollToSection(hashId, false);
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
-  // Close mobile menu on Escape key
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && mobileMenuOpen) {
-        setMobileMenuOpen(false);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [mobileMenuOpen]);
-
   const navItems = [
-    { id: 'home', label: 'Home' },
-    { id: 'services', label: 'Services' },
-    { id: 'pricing', label: 'Pricing' },
-    { id: 'projects', label: 'Projects' },
-    { id: 'about', label: 'About' },
-    { id: 'contact', label: 'Contact' },
+    { label: 'HOME', href: '#home', id: 'home' },
+    { label: 'ABOUT', href: '#about', id: 'about' },
+    { label: 'SERVICES', href: '#services', id: 'services' },
+    { label: 'PROJECTS', href: '#projects', id: 'projects' },
+    { label: 'PRICING', href: '#pricing', id: 'pricing' },
+    { label: 'CONTACT', href: '#contact', id: 'contact' },
   ];
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    setMobileMenuOpen(false);
-    scrollToSection(id, true);
-  };
-
   return (
-    <>
-      {/* Mobile Backdrop Blur Overlay — only mounted and visible when mobileMenuOpen is true */}
-      {mobileMenuOpen && (
-        <div 
-          className="mobile-backdrop-overlay md:hidden"
-          onClick={() => setMobileMenuOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
-      <header className={`fixed top-0 left-0 w-full z-[1000] ${isScrolled ? 'scrolled' : ''}`} id="main-header">
-        {/* STEP 4: Thin blue light line sweep across header area */}
-        <div className="header-light-sweep" aria-hidden="true" />
-
-        <nav className="navbar container relative flex items-center justify-between">
-          <a 
-            href="#home" 
-            className="logo flex items-center gap-2.5 z-10" 
-            onClick={(e) => handleNavClick(e, 'home')}
-            aria-label="Champz Digital Home"
-          >
-            <span className="logo-badge animate-cd-logo shrink-0" role="img" aria-label="Champz Digital logo">
-              <span>C</span><span className="badge-d">D</span>
+    <header className={isScrolled ? 'scrolled' : ''} id="main-header">
+      <div className="container">
+        <nav className="navbar" aria-label="Main Navigation">
+          {/* Clarity Creative Logo */}
+          <a href="#home" className="logo" aria-label="Clarity Creative Homepage">
+            <span className="logo-badge" aria-hidden="true">
+              <span className="badge-c">C</span>
+              <span className="badge-sup">2</span>
             </span>
-            <span className="logo-title animate-brand-title whitespace-nowrap">
-              Champz<span className="title-digital">Digital</span>
+            <span className="logo-title">
+              CLARITY<span className="title-creative">CREATIVE</span>
             </span>
           </a>
 
-          {/* Nav links: hidden on mobile by default, displayed as dropdown when open */}
-          <ul 
-            className={`nav-links ${mobileMenuOpen ? 'open' : ''}`} 
-            id="navLinks"
-            role="menu"
-          >
+          {/* Desktop Navigation Links */}
+          <ul className="nav-links">
             {navItems.map((item) => (
-              <li key={item.id} role="none">
+              <li key={item.id}>
                 <a
-                  href={`#${item.id}`}
-                  role="menuitem"
-                  className={activeSection === item.id ? 'active' : ''}
-                  onClick={(e) => handleNavClick(e, item.id)}
+                  href={item.href}
+                  className={`nav-link ${activeSection === item.id ? 'active' : ''}`}
                 >
                   {item.label}
                 </a>
               </li>
             ))}
-            {mobileMenuOpen && (
-              <>
-                <li className="pt-3 md:hidden w-full max-w-[240px]" role="none">
-                  <a
-                    href="#contact"
-                    role="menuitem"
-                    className="nav-contact inline-flex items-center justify-center gap-2 w-full text-center"
-                    onClick={(e) => handleNavClick(e, 'contact')}
-                  >
-                    <MessageSquare className="w-3.5 h-3.5" />
-                    Connect
-                  </a>
-                </li>
-                <li className="pt-2 md:hidden w-full max-w-[240px] flex justify-center" role="none">
-                  <PWAInstallButton variant="mobile" />
-                </li>
-              </>
-            )}
           </ul>
 
-          <div className="hidden md:flex items-center gap-3 animate-nav-items">
+          {/* Desktop Action Buttons */}
+          <div className="nav-actions">
             <PWAInstallButton variant="nav" />
-            <a 
-              href="#contact" 
-              className="nav-contact inline-flex items-center gap-2"
-              onClick={(e) => handleNavClick(e, 'contact')}
+
+            <a
+              href="#contact"
+              className="btn btn-primary !py-2.5 !px-5 !text-xs !rounded-full shadow-md shadow-[#8B5CF6]/30"
+              id="nav-cta-btn"
             >
-              Connect
+              <span>START A PROJECT</span>
+              <ArrowRight className="w-3.5 h-3.5" />
             </a>
           </div>
 
+          {/* Mobile Menu Button */}
           <button
             type="button"
-            className="menu-btn md:hidden"
-            id="menuBtn"
+            className="mobile-nav-toggle"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileMenuOpen}
-            aria-controls="navLinks"
+            aria-label={mobileMenuOpen ? 'Close Navigation Menu' : 'Open Navigation Menu'}
           >
-            {mobileMenuOpen ? <X className="w-6 h-6 text-white" /> : <Menu className="w-6 h-6 text-white" />}
+            {mobileMenuOpen ? <X className="w-6 h-6 text-[#A78BFA]" /> : <Menu className="w-6 h-6 text-[#F8FAFC]" />}
           </button>
         </nav>
-      </header>
-    </>
+      </div>
+
+      {/* Mobile Slide-down Drawer */}
+      {mobileMenuOpen && (
+        <div 
+          className="md:hidden border-b border-[#1E293B] bg-[#0E1428]/98 backdrop-blur-2xl px-6 py-6 transition-all animate-in slide-in-from-top-4 duration-300 shadow-2xl"
+          id="mobile-drawer"
+        >
+          <ul className="flex flex-col gap-4 mb-6">
+            {navItems.map((item) => (
+              <li key={item.id}>
+                <a
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`flex items-center justify-between py-2.5 text-base font-bold transition-colors ${
+                    activeSection === item.id
+                      ? 'text-[#A78BFA] border-l-2 border-[#8B5CF6] pl-3'
+                      : 'text-[#94A3B8] hover:text-white pl-1'
+                  }`}
+                >
+                  <span>{item.label}</span>
+                  {activeSection === item.id && (
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#8B5CF6]" />
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+
+          <div className="flex flex-col gap-3 pt-4 border-t border-[#1E293B]">
+            <PWAInstallButton variant="mobile" />
+
+            <a
+              href="#contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="btn btn-primary w-full text-center justify-center py-3 text-sm font-bold"
+            >
+              <span>START A PROJECT</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+
+            <a
+              href="https://wa.me/2348137941486"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn-whatsapp w-full text-center justify-center py-3 text-sm font-bold"
+            >
+              <MessageCircle className="w-4 h-4" />
+              <span>CHAT ON WHATSAPP</span>
+            </a>
+          </div>
+        </div>
+      )}
+    </header>
   );
 };

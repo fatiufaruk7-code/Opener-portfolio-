@@ -1,63 +1,67 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
   <defs>
     <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#0D1220" />
-      <stop offset="50%" stop-color="#080B14" />
-      <stop offset="100%" stop-color="#05070E" />
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="50%" stop-color="#0B1020" />
+      <stop offset="100%" stop-color="#060913" />
     </linearGradient>
     <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#3B82F6" stop-opacity="0.5" />
-      <stop offset="50%" stop-color="#1E293B" stop-opacity="0.8" />
-      <stop offset="100%" stop-color="#22D3EE" stop-opacity="0.3" />
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.6" />
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.5" />
+      <stop offset="100%" stop-color="#EC4899" stop-opacity="0.4" />
     </linearGradient>
-    <radialGradient id="glow" cx="50%" cy="50%" r="55%">
-      <stop offset="0%" stop-color="#2563EB" stop-opacity="0.25" />
-      <stop offset="60%" stop-color="#3B82F6" stop-opacity="0.06" />
-      <stop offset="100%" stop-color="#080B14" stop-opacity="0" />
+    <radialGradient id="glow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#8B5CF6" stop-opacity="0.3" />
+      <stop offset="50%" stop-color="#3B82F6" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#0B1020" stop-opacity="0" />
     </radialGradient>
-    <linearGradient id="cGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+    <linearGradient id="c1Grad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#FFFFFF" />
-      <stop offset="100%" stop-color="#CBD5E1" />
+      <stop offset="40%" stop-color="#A78BFA" />
+      <stop offset="100%" stop-color="#8B5CF6" />
     </linearGradient>
-    <linearGradient id="dGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#60A5FA" />
-      <stop offset="50%" stop-color="#3B82F6" />
-      <stop offset="100%" stop-color="#2563EB" />
+    <linearGradient id="c2Grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#38BDF8" />
+      <stop offset="60%" stop-color="#60A5FA" />
+      <stop offset="100%" stop-color="#EC4899" />
     </linearGradient>
-    <filter id="subtleShadow" x="-10%" y="-10%" width="130%" height="130%">
-      <feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000000" flood-opacity="0.7"/>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="10" stdDeviation="16" flood-color="#000000" flood-opacity="0.8"/>
     </filter>
   </defs>
 
   <!-- Background Base -->
-  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
-  <rect width="506" height="506" x="3" y="3" rx="109" fill="none" stroke="url(#borderGrad)" stroke-width="2.5" />
+  <rect width="512" height="512" rx="116" fill="url(#bgGrad)" />
+  <rect width="506" height="506" x="3" y="3" rx="113" fill="none" stroke="url(#borderGrad)" stroke-width="3" />
   
-  <!-- Ambient Inner Glow -->
-  <circle cx="256" cy="256" r="190" fill="url(#glow)" />
+  <!-- Ambient Inner Radial Glow -->
+  <circle cx="256" cy="256" r="210" fill="url(#glow)" />
 
-  <!-- CD Monogram (Champz Digital) -->
-  <g filter="url(#subtleShadow)">
-    <!-- Geometric 'C' Arc -->
+  <!-- Clarity Creative CC / C² Monogram -->
+  <g filter="url(#shadow)">
+    <!-- Outer Orbit Ring -->
+    <circle cx="256" cy="256" r="168" stroke="url(#borderGrad)" stroke-width="3" stroke-dasharray="16 12" opacity="0.4" />
+
+    <!-- Outer 'C' Arc -->
     <path 
-      d="M 224 162 C 160 162 116 206 116 256 C 116 306 160 350 224 350" 
+      d="M 346 154 C 218 102 124 178 126 270 C 128 360 220 410 350 362" 
       fill="none" 
-      stroke="url(#cGrad)" 
-      stroke-width="42" 
+      stroke="url(#c1Grad)" 
+      stroke-width="44" 
       stroke-linecap="round" 
     />
 
-    <!-- Geometric 'D' Stem and Lobe -->
+    <!-- Inner 'C' / Squared Accent -->
     <path 
-      d="M 276 162 L 276 350 M 276 162 C 344 162 396 202 396 256 C 396 310 344 350 276 350" 
+      d="M 314 206 C 228 174 186 218 190 268 C 194 316 238 338 316 308" 
       fill="none" 
-      stroke="url(#dGrad)" 
-      stroke-width="42" 
+      stroke="url(#c2Grad)" 
+      stroke-width="34" 
       stroke-linecap="round" 
-      stroke-linejoin="round"
     />
 
-    <!-- Electric Cyan Precision Status Dot -->
-    <circle cx="396" cy="168" r="8.5" fill="#22D3EE" />
+    <!-- Precision Glowing Geometric Dot -->
+    <circle cx="376" cy="142" r="14" fill="#38BDF8" />
+    <circle cx="376" cy="142" r="24" fill="#38BDF8" opacity="0.25" />
   </g>
 </svg>

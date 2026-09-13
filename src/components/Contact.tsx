@@ -1,566 +1,277 @@
 import React, { useState } from 'react';
 import { 
   Mail, 
-  MapPin, 
-  Clock, 
-  Send, 
-  Check, 
-  Copy, 
   MessageCircle, 
   Twitter, 
-  Globe, 
-  ArrowRight, 
-  CheckCircle2, 
-  Loader2 
+  Copy, 
+  Check, 
+  Send, 
+  ArrowRight,
+  Phone,
+  Sparkles
 } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData.ts';
-import { ContactFormData } from '../types.ts';
-
-const PROJECT_TYPES = [
-  'Business Website',
-  'Landing Page',
-  'Portfolio',
-  'E-commerce',
-  'School Portal',
-  'Web Application',
-  'PWA',
-  'Website Redesign',
-  'Other',
-];
-
-const BUDGET_RANGES = [
-  '₦30k – ₦50k',
-  '₦50k – ₦80k',
-  '₦80k – ₦100k',
-  '₦100k+',
-  'Not sure yet',
-];
 
 export const Contact: React.FC = () => {
-  const [formData, setFormData] = useState<ContactFormData>({
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
-    whatsapp: '',
     projectType: 'Business Website',
-    budget: '₦50k – ₦80k',
-    message: '',
+    message: ''
   });
-
+  const [submitted, setSubmitted] = useState(false);
   const [copiedEmail, setCopiedEmail] = useState(false);
-  const [copiedWhatsApp, setCopiedWhatsApp] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'fallback'>('idle');
+  const [copiedPhone, setCopiedPhone] = useState(false);
 
-  const defaultWhatsAppText = encodeURIComponent(
-    "Hello Champz Digital, I'd like to discuss a website project."
-  );
-
-  const getCustomWhatsAppUrl = () => {
-    let text = "Hello Champz Digital, I'd like to discuss a website project.";
-    if (formData.name || formData.projectType) {
-      text = `Hello Champz Digital,\nMy name is ${formData.name || 'a visitor'}. I'm interested in a ${formData.projectType || 'website'} project.\nBudget: ${formData.budget || 'Not specified'}.\n\nMessage: ${formData.message || 'I would like to discuss working together.'}`;
-    }
-    return `https://wa.me/2348137941486?text=${encodeURIComponent(text)}`;
-  };
-
-  const getCustomMailtoUrl = () => {
-    const subject = encodeURIComponent(
-      `Project Inquiry: ${formData.projectType || 'Website'} - ${formData.name || 'Client'}`
-    );
-    const body = encodeURIComponent(
-      `Hi Champz Digital,\n\nName: ${formData.name || 'N/A'}\nEmail: ${formData.email || 'N/A'}\nWhatsApp: ${formData.whatsapp || 'N/A'}\nProject Type: ${formData.projectType || 'N/A'}\nBudget: ${formData.budget || 'N/A'}\n\nProject Details:\n${formData.message || 'I would like to discuss a project with you.'}`
-    );
-    return `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
-  };
-
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(personalInfo.email);
-      setCopiedEmail(true);
-      setTimeout(() => setCopiedEmail(false), 2000);
-    } catch {
-      setCopiedEmail(true);
-      setTimeout(() => setCopiedEmail(false), 2000);
-    }
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(personalInfo.email);
+    setCopiedEmail(true);
+    setTimeout(() => setCopiedEmail(false), 2000);
   };
 
-  const copyWhatsAppNumber = async () => {
-    try {
-      await navigator.clipboard.writeText(personalInfo.socials.whatsappNumber);
-      setCopiedWhatsApp(true);
-      setTimeout(() => setCopiedWhatsApp(false), 2000);
-    } catch {
-      setCopiedWhatsApp(true);
-      setTimeout(() => setCopiedWhatsApp(false), 2000);
-    }
+  const handleCopyPhone = () => {
+    navigator.clipboard.writeText(personalInfo.socials.whatsappNumber);
+    setCopiedPhone(true);
+    setTimeout(() => setCopiedPhone(false), 2000);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.message) return;
-
-    setIsSubmitting(true);
-
-    try {
-      const response = await fetch(`https://formsubmit.co/ajax/${personalInfo.email}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-        body: JSON.stringify({
-          'Full Name': formData.name,
-          'Email Address': formData.email,
-          'WhatsApp Number': formData.whatsapp || 'Not provided',
-          'Project Type': formData.projectType || 'General Website',
-          'Budget Range': formData.budget || 'Not sure yet',
-          'Project Description': formData.message,
-          _subject: `New Project Inquiry: ${formData.projectType} from ${formData.name}`,
-          _template: 'table',
-        }),
-      });
-
-      if (response.ok) {
-        setSubmitStatus('success');
-      } else {
-        // Graceful fallback to direct links without technical error text
-        setSubmitStatus('fallback');
-      }
-    } catch {
-      // In case of network disconnect or offline mode
-      setSubmitStatus('fallback');
-    } finally {
-      setIsSubmitting(false);
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      return;
     }
-  };
 
-  const handleResetForm = () => {
-    setFormData({
-      name: '',
-      email: '',
-      whatsapp: '',
-      projectType: 'Business Website',
-      budget: '₦50k – ₦80k',
-      message: '',
-    });
-    setSubmitStatus('idle');
+    // In a production environment with mail client, redirect to mailto:
+    const subject = encodeURIComponent(`Project Inquiry: ${formData.projectType} - ${formData.name}`);
+    const body = encodeURIComponent(
+      `Hello Clarity Creative,\n\nMy name is ${formData.name}.\nEmail: ${formData.email}\nProject Type: ${formData.projectType}\n\nMessage:\n${formData.message}`
+    );
+    window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+
+    setSubmitted(true);
   };
 
   return (
-    <section className="contact section" id="contact">
+    <section className="section" id="contact">
       <div className="container">
-        <div className="contact-box-frosted reveal" id="contact-container">
-          {/* ===================================================
-              LEFT COLUMN: CONTACT INFO & DIRECT CTAS
-          =================================================== */}
-          <div className="flex flex-col justify-between">
-            <div>
-              <span className="contact-label-frosted">GET IN TOUCH</span>
+        <div className="section-title">
+          <p>GET IN TOUCH</p>
+          <h2>
+            LET&apos;S BUILD <span>SOMETHING GREAT</span>
+          </h2>
+          <p className="section-subtitle-text">
+            Have a project in mind? Let&apos;s discuss how I can help bring it to life with modern code and clear solutions.
+          </p>
+        </div>
 
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white mt-3 mb-3 leading-[1.1]">
-                Have a project in mind?
-              </h2>
+        <div className="contact-grid">
+          {/* Left: Contact Info & Channels */}
+          <div className="contact-info-card">
+            <h3 className="text-xl font-extrabold text-white mb-3">
+              Direct Contact
+            </h3>
+            <p className="text-sm text-[#94A3B8] mb-8 leading-relaxed">
+              Feel free to reach out directly via email, message on WhatsApp, or connect on Twitter/X. I respond promptly to all new project inquiries.
+            </p>
 
-              <p className="text-base sm:text-lg text-[#A3A3A3] font-medium leading-relaxed max-w-md">
-                Let&apos;s build something great together.
-              </p>
+            {/* Email Channel */}
+            <div className="contact-item">
+              <div className="contact-icon-box">
+                <Mail className="w-5 h-5" />
+              </div>
+              <div className="flex-grow min-w-0">
+                <span className="text-xs text-[#94A3B8] font-semibold block">Email Address</span>
+                <a 
+                  href={`mailto:${personalInfo.email}`} 
+                  className="text-sm font-bold text-white hover:text-[#A78BFA] transition-colors truncate block"
+                >
+                  {personalInfo.email}
+                </a>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                className="p-2 rounded-lg bg-[#0E1428] border border-[#1E293B] text-[#94A3B8] hover:text-white hover:border-[#8B5CF6]/50 transition-colors"
+                title="Copy email"
+                aria-label="Copy email"
+              >
+                {copiedEmail ? <Check className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
+              </button>
+            </div>
 
-              {/* Clean Contact Information Card */}
-              <div className="mt-8 p-6 rounded-2xl bg-[#0D1220] border border-[#1E293B] space-y-4 shadow-xl">
-                {/* Email */}
-                <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-[#1E293B]">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-[#2563EB]/15 border border-[#3B82F6]/30 flex items-center justify-center shrink-0 text-[#3B82F6]">
-                      <Mail className="w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
-                        Email
-                      </span>
-                      <a 
-                        href={`mailto:${personalInfo.email}`} 
-                        className="text-xs sm:text-sm font-mono text-[#F8FAFC] hover:text-[#60A5FA] transition-colors truncate block"
-                        title="Send email"
-                      >
-                        {personalInfo.email}
-                      </a>
-                    </div>
-                  </div>
+            {/* WhatsApp Channel */}
+            <div className="contact-item">
+              <div className="contact-icon-box">
+                <MessageCircle className="w-5 h-5 text-[#22C55E]" />
+              </div>
+              <div className="flex-grow min-w-0">
+                <span className="text-xs text-[#94A3B8] font-semibold block">WhatsApp Direct</span>
+                <a 
+                  href={personalInfo.socials.whatsapp} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm font-bold text-white hover:text-[#22C55E] transition-colors block"
+                >
+                  {personalInfo.socials.whatsappNumber}
+                </a>
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyPhone}
+                className="p-2 rounded-lg bg-[#0E1428] border border-[#1E293B] text-[#94A3B8] hover:text-white hover:border-[#22C55E]/50 transition-colors"
+                title="Copy phone"
+                aria-label="Copy phone"
+              >
+                {copiedPhone ? <Check className="w-4 h-4 text-[#10B981]" /> : <Copy className="w-4 h-4" />}
+              </button>
+            </div>
 
-                  <button
-                    type="button"
-                    onClick={copyEmail}
-                    className="p-1.5 rounded-md text-[#64748B] hover:text-[#60A5FA] hover:bg-[#162032] transition-colors shrink-0"
-                    title="Copy email"
-                    aria-label="Copy email address"
-                  >
-                    {copiedEmail ? (
-                      <Check className="w-3.5 h-3.5 text-[#3B82F6]" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5" />
-                    )}
-                  </button>
-                </div>
-
-                {/* WhatsApp */}
-                <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-[#1E293B]">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-[#2563EB]/15 border border-[#3B82F6]/30 flex items-center justify-center shrink-0 text-[#3B82F6]">
-                      <MessageCircle className="w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
-                        WhatsApp
-                      </span>
-                      <a 
-                        href={`https://wa.me/2348137941486?text=${defaultWhatsAppText}`} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="text-xs sm:text-sm font-mono text-[#F8FAFC] hover:text-[#60A5FA] transition-colors truncate block"
-                        title="Open WhatsApp chat"
-                      >
-                        {personalInfo.socials.whatsappNumber}
-                      </a>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={copyWhatsAppNumber}
-                    className="p-1.5 rounded-md text-[#64748B] hover:text-[#60A5FA] hover:bg-[#162032] transition-colors shrink-0"
-                    title="Copy WhatsApp number"
-                    aria-label="Copy WhatsApp number"
-                  >
-                    {copiedWhatsApp ? (
-                      <Check className="w-3.5 h-3.5 text-[#3B82F6]" />
-                    ) : (
-                      <Copy className="w-3.5 h-3.5" />
-                    )}
-                  </button>
-                </div>
-
-                {/* X / Twitter */}
-                <div className="flex items-start justify-between gap-3 pb-3.5 border-b border-[#1E293B]">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-[#2563EB]/15 border border-[#3B82F6]/30 flex items-center justify-center shrink-0 text-[#3B82F6]">
-                      <Twitter className="w-4 h-4" />
-                    </div>
-                    <div className="min-w-0">
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
-                        X / Twitter
-                      </span>
-                      <a 
-                        href={personalInfo.socials.twitter} 
-                        target="_blank" 
-                        rel="noreferrer"
-                        className="text-xs sm:text-sm font-mono text-[#F8FAFC] hover:text-[#60A5FA] transition-colors truncate block"
-                        title="View profile on X (Twitter)"
-                      >
-                        @Toriblackm8j9
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Availability */}
-                <div className="flex items-center justify-between gap-3 pb-3.5 border-b border-[#1E293B]">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="w-8 h-8 rounded-lg bg-[#2563EB]/15 border border-[#3B82F6]/30 flex items-center justify-center shrink-0 text-[#3B82F6]">
-                      <Globe className="w-4 h-4" />
-                    </div>
-                    <div>
-                      <span className="block text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
-                        Availability
-                      </span>
-                      <span className="text-xs sm:text-sm text-[#E2E8F0] font-medium">
-                        {personalInfo.location}
-                      </span>
-                    </div>
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-[10px] font-semibold bg-[#2563EB]/15 text-[#60A5FA] border border-[#3B82F6]/30 shrink-0">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#3B82F6] animate-pulse"></span>
-                    Open
-                  </span>
-                </div>
-
-                {/* Response Time */}
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-[#2563EB]/15 border border-[#3B82F6]/30 flex items-center justify-center shrink-0 text-[#3B82F6]">
-                    <Clock className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <span className="block text-[10px] font-bold uppercase tracking-wider text-[#64748B]">
-                      Response Time
-                    </span>
-                    <span className="text-xs sm:text-sm text-[#E2E8F0] font-medium">
-                      Usually within 24 hours
-                    </span>
-                  </div>
-                </div>
+            {/* Twitter / X Channel */}
+            <div className="contact-item">
+              <div className="contact-icon-box">
+                <Twitter className="w-5 h-5 text-[#60A5FA]" />
+              </div>
+              <div className="flex-grow min-w-0">
+                <span className="text-xs text-[#94A3B8] font-semibold block">Twitter / X</span>
+                <a 
+                  href={personalInfo.socials.twitter} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm font-bold text-white hover:text-[#60A5FA] transition-colors truncate block"
+                >
+                  @Toriblackm8j9
+                </a>
               </div>
             </div>
 
-            {/* Direct Action Buttons */}
-            <div className="mt-8 pt-6 border-t border-[#1E293B] flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-              {/* Primary CTA: WhatsApp */}
+            {/* Quick action buttons */}
+            <div className="pt-6 border-t border-[#1E293B] flex flex-col sm:flex-row gap-3">
               <a
-                href={`https://wa.me/2348137941486?text=${defaultWhatsAppText}`}
+                href={personalInfo.socials.whatsapp}
                 target="_blank"
-                rel="noreferrer"
-                id="whatsapp-primary-cta"
-                className="flex-1 flex items-center justify-center gap-2.5 px-5 py-3.5 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-extrabold text-sm tracking-wide shadow-md shadow-[#2563EB]/25 transition-all hover:scale-[1.02] active:scale-[0.98] no-underline cursor-pointer"
-                title="Chat on WhatsApp (08137941486)"
+                rel="noopener noreferrer"
+                className="btn btn-whatsapp flex-1"
+                id="contact-whatsapp-btn"
               >
-                <MessageCircle className="w-4 h-4 fill-current text-white" />
-                <span>Chat on WhatsApp</span>
+                <MessageCircle className="w-4 h-4" />
+                <span>CHAT ON WHATSAPP</span>
               </a>
 
-              {/* Secondary CTA: Email */}
               <a
-                href={`mailto:${personalInfo.email}?subject=${encodeURIComponent("Project Inquiry - Champz Digital")}`}
-                id="email-secondary-cta"
-                className="flex-1 sm:flex-initial flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#0D1220] hover:bg-[#162032] border border-[#1E293B] hover:border-[#3B82F6]/50 text-[#F8FAFC] hover:text-[#60A5FA] font-semibold text-sm transition-all no-underline cursor-pointer"
-                title="Email Champz Digital"
+                href={`mailto:${personalInfo.email}`}
+                className="btn btn-secondary flex-1"
+                id="contact-email-btn"
               >
-                <Mail className="w-4 h-4" />
-                <span>Send Email</span>
+                <Mail className="w-4 h-4 text-[#A78BFA]" />
+                <span>SEND EMAIL</span>
               </a>
             </div>
           </div>
 
-          {/* ===================================================
-              RIGHT COLUMN: START A PROJECT INQUIRY FORM
-          =================================================== */}
-          <div className="flex flex-col justify-center">
-            <div className="p-6 sm:p-8 rounded-2xl bg-[#0D1220] border border-[#1E293B] shadow-2xl relative">
-              {/* Form Title & Short Description */}
-              <div className="mb-6">
-                <h3 className="text-xl sm:text-2xl font-bold text-[#F8FAFC] tracking-tight">
-                  Start a Project
-                </h3>
-                <p className="text-xs sm:text-sm text-[#94A3B8] mt-1.5 leading-relaxed">
-                  Tell me a little about what you need and I&apos;ll get back to you.
+          {/* Right: Message Form */}
+          <div className="contact-form-card">
+            <h3 className="text-xl font-extrabold text-white mb-2">
+              Send a Project Message
+            </h3>
+            <p className="text-xs text-[#94A3B8] mb-6">
+              Fill out the form below and I will get back to you within 24 hours.
+            </p>
+
+            {submitted ? (
+              <div className="p-6 rounded-xl bg-[#0E1428] border border-[#8B5CF6]/40 text-center space-y-3">
+                <div className="w-12 h-12 rounded-full bg-[#8B5CF6]/20 text-[#A78BFA] flex items-center justify-center mx-auto">
+                  <Check className="w-6 h-6" />
+                </div>
+                <h4 className="text-base font-bold text-white">Message Dispatched</h4>
+                <p className="text-xs text-[#94A3B8]">
+                  Thank you for reaching out! Opening your email client to complete transmission. You can also message me on WhatsApp for immediate response.
                 </p>
+                <button
+                  type="button"
+                  onClick={() => setSubmitted(false)}
+                  className="btn btn-secondary !text-xs !py-2 !px-4 mt-2"
+                >
+                  Send another inquiry
+                </button>
               </div>
-
-              {submitStatus === 'success' ? (
-                /* Success Confirmation State */
-                <div className="py-8 px-4 text-center space-y-4 animate-in fade-in duration-300">
-                  <div className="w-14 h-14 rounded-full bg-[#2563EB]/15 border border-[#3B82F6]/30 text-[#3B82F6] mx-auto flex items-center justify-center shadow-md shadow-[#2563EB]/20">
-                    <CheckCircle2 className="w-7 h-7" />
-                  </div>
-                  
-                  <div className="space-y-1">
-                    <h4 className="text-lg font-bold text-[#F8FAFC]">Inquiry Sent Successfully!</h4>
-                    <p className="text-xs sm:text-sm text-[#94A3B8] max-w-sm mx-auto leading-relaxed">
-                      Thank you, <span className="text-[#F8FAFC] font-semibold">{formData.name || 'Friend'}</span>! I have received your inquiry and will review your project details shortly.
-                    </p>
-                  </div>
-
-                  <div className="pt-3 flex flex-col gap-2.5 max-w-xs mx-auto">
-                    <a
-                      href={getCustomWhatsAppUrl()}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#2563EB] text-white font-bold text-xs shadow-md shadow-[#2563EB]/25 transition-all hover:bg-[#1D4ED8]"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span>Chat on WhatsApp to Expedite</span>
-                    </a>
-
-                    <button
-                      type="button"
-                      onClick={handleResetForm}
-                      className="text-xs text-[#64748B] hover:text-[#F8FAFC] transition-colors py-2 cursor-pointer"
-                    >
-                      Send another inquiry
-                    </button>
-                  </div>
+            ) : (
+              <form onSubmit={handleSubmit} id="contact-inquiry-form">
+                <div className="form-group">
+                  <label htmlFor="contact-name" className="form-label">Your Name</label>
+                  <input
+                    type="text"
+                    id="contact-name"
+                    name="name"
+                    required
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="e.g. Alex Johnson"
+                    className="form-input"
+                  />
                 </div>
-              ) : submitStatus === 'fallback' ? (
-                /* Seamless Direct Dispatch Fallback */
-                <div className="py-6 px-2 text-center space-y-4 animate-in fade-in duration-300">
-                  <div className="w-12 h-12 rounded-full bg-[#2563EB]/15 border border-[#3B82F6]/30 text-[#3B82F6] mx-auto flex items-center justify-center">
-                    <Send className="w-6 h-6" />
-                  </div>
 
-                  <div className="space-y-1">
-                    <h4 className="text-base sm:text-lg font-bold text-[#F8FAFC]">Project Inquiry Ready</h4>
-                    <p className="text-xs text-[#94A3B8] max-w-xs mx-auto leading-relaxed">
-                      Your details are ready. Choose your preferred platform below to dispatch directly:
-                    </p>
-                  </div>
-
-                  <div className="pt-2 flex flex-col gap-2.5 max-w-xs mx-auto">
-                    <a
-                      href={getCustomWhatsAppUrl()}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#2563EB] text-white font-bold text-xs shadow-md shadow-[#2563EB]/25 transition-all hover:bg-[#1D4ED8]"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span>Send via WhatsApp</span>
-                    </a>
-
-                    <a
-                      href={getCustomMailtoUrl()}
-                      className="inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#111827] border border-[#1E293B] text-[#F8FAFC] hover:text-[#60A5FA] font-semibold text-xs transition-colors"
-                    >
-                      <Mail className="w-4 h-4" />
-                      <span>Send via Email</span>
-                    </a>
-
-                    <button
-                      type="button"
-                      onClick={() => setSubmitStatus('idle')}
-                      className="text-[11px] text-[#64748B] hover:text-[#F8FAFC] transition-colors pt-2 cursor-pointer"
-                    >
-                      Back to edit form
-                    </button>
-                  </div>
+                <div className="form-group">
+                  <label htmlFor="contact-email" className="form-label">Email Address</label>
+                  <input
+                    type="email"
+                    id="contact-email"
+                    name="email"
+                    required
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    placeholder="e.g. alex@example.com"
+                    className="form-input"
+                  />
                 </div>
-              ) : (
-                /* Primary Interactive Inquiry Form */
-                <form onSubmit={handleSubmit} className="space-y-4" id="project-inquiry-form">
-                  {/* Full Name */}
-                  <div className="form-group">
-                    <label htmlFor="inquiry-name">Full Name *</label>
-                    <input
-                      type="text"
-                      id="inquiry-name"
-                      name="name"
-                      required
-                      placeholder="e.g. Alex Morgan"
-                      value={formData.name}
-                      onChange={handleInputChange}
-                      autoComplete="name"
-                    />
-                  </div>
 
-                  {/* Email & WhatsApp Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="form-group">
-                      <label htmlFor="inquiry-email">Email *</label>
-                      <input
-                        type="email"
-                        id="inquiry-email"
-                        name="email"
-                        required
-                        placeholder="alex@example.com"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        autoComplete="email"
-                      />
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="inquiry-whatsapp">WhatsApp Number</label>
-                      <input
-                        type="tel"
-                        id="inquiry-whatsapp"
-                        name="whatsapp"
-                        placeholder="e.g. 08137941486"
-                        value={formData.whatsapp}
-                        onChange={handleInputChange}
-                        autoComplete="tel"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Project Type & Budget Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="form-group">
-                      <label htmlFor="inquiry-project-type">Project Type</label>
-                      <select
-                        id="inquiry-project-type"
-                        name="projectType"
-                        value={formData.projectType}
-                        onChange={handleInputChange}
-                      >
-                        {PROJECT_TYPES.map((type) => (
-                          <option key={type} value={type}>
-                            {type}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="form-group">
-                      <label htmlFor="inquiry-budget">Budget</label>
-                      <select
-                        id="inquiry-budget"
-                        name="budget"
-                        value={formData.budget}
-                        onChange={handleInputChange}
-                      >
-                        {BUDGET_RANGES.map((range) => (
-                          <option key={range} value={range}>
-                            {range}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  {/* Project Description */}
-                  <div className="form-group">
-                    <label htmlFor="inquiry-message">Project Description *</label>
-                    <textarea
-                      id="inquiry-message"
-                      name="message"
-                      required
-                      rows={4}
-                      placeholder="Tell me about your goals, features you need, or preferred timeline..."
-                      value={formData.message}
-                      onChange={handleInputChange}
-                    ></textarea>
-                  </div>
-
-                  {/* Primary Form Submit Button */}
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    id="submit-inquiry-button"
-                    className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-xl bg-[#2563EB] hover:bg-[#1D4ED8] text-white font-extrabold text-sm tracking-wide shadow-md shadow-[#2563EB]/25 transition-all hover:scale-[1.01] active:scale-[0.99] disabled:opacity-60 cursor-pointer"
+                <div className="form-group">
+                  <label htmlFor="contact-project-type" className="form-label">Project Type</label>
+                  <select
+                    id="contact-project-type"
+                    name="projectType"
+                    value={formData.projectType}
+                    onChange={handleInputChange}
+                    className="form-select"
                   >
-                    {isSubmitting ? (
-                      <>
-                        <Loader2 className="w-4 h-4 animate-spin text-white" />
-                        <span>Sending Inquiry...</span>
-                      </>
-                    ) : (
-                      <>
-                        <span>Send Project Inquiry</span>
-                        <Send className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
+                    <option value="Business Website">Business Website</option>
+                    <option value="Landing Page">Landing Page</option>
+                    <option value="Personal Portfolio">Personal Portfolio</option>
+                    <option value="Restaurant Website">Restaurant Website</option>
+                    <option value="Web Application / Portal">Web Application / Portal</option>
+                    <option value="Website Deployment / Redesign">Website Deployment / Redesign</option>
+                    <option value="Custom Project">Custom Project</option>
+                  </select>
+                </div>
 
-                  {/* Secondary Option: Prefer WhatsApp? */}
-                  <div className="pt-2 text-center">
-                    <span className="text-xs text-[#64748B]">
-                      Prefer WhatsApp?{' '}
-                      <a
-                        href={getCustomWhatsAppUrl()}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[#3B82F6] hover:text-[#60A5FA] font-medium inline-flex items-center gap-1 transition-colors underline-offset-2 hover:underline"
-                      >
-                        <span>Chat directly</span>
-                        <ArrowRight className="w-3 h-3" />
-                      </a>
-                    </span>
-                  </div>
-                </form>
-              )}
-            </div>
+                <div className="form-group">
+                  <label htmlFor="contact-message" className="form-label">Project Details &amp; Requirements</label>
+                  <textarea
+                    id="contact-message"
+                    name="message"
+                    required
+                    rows={4}
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    placeholder="Tell me about your timeline, goals, pages needed, or features..."
+                    className="form-textarea resize-none"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary w-full"
+                  id="submit-contact-btn"
+                >
+                  <Send className="w-4 h-4" />
+                  <span>SEND MESSAGE</span>
+                </button>
+              </form>
+            )}
           </div>
         </div>
       </div>
